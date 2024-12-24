@@ -20,13 +20,68 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  constructor(direct = true) {
+    this.direct = direct;
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+
+  isLetter(symbol) {
+    return symbol.toLowerCase() !== symbol.toUpperCase();
+  }
+
+  encrypt(message, key) {
+    if (!message || !key) {
+      throw new Error('Incorrect arguments!');
+    }
+
+    message = message.toUpperCase();
+    key = key.toUpperCase();
+
+    let keyIndex = 0
+    let result = [];
+
+    for (let char of message) {
+      if(this.isLetter(char)) {
+        let mesCharCode = char.charCodeAt(0);
+        let keyCharCode = key.charCodeAt(keyIndex % key.length);
+        let newCharCode = ((mesCharCode - 65) + (keyCharCode - 65)) % 26 + 65;
+
+        result.push(String.fromCharCode(newCharCode));
+        keyIndex++
+      } else {
+        result.push(char);
+      }
+    }
+
+    let encryptResult = result.join('');
+    return this.direct ? encryptResult : result.reverse().join('');
+  }
+
+  decrypt(message, key) {
+    if (!message || !key) {
+      throw new Error('Incorrect arguments!');
+    }
+
+    message = message.toUpperCase();
+    key = key.toUpperCase();
+
+    let keyIndex = 0
+    let result = [];
+
+    for (let char of message) {
+      if(this.isLetter(char)) {
+        let encCharCode = char.charCodeAt(0);
+        let keyCharCode = key.charCodeAt(keyIndex % key.length);
+        let decryptedCharCode = ((encCharCode - 65) - (keyCharCode - 65) + 26) % 26 + 65;
+
+        result.push(String.fromCharCode(decryptedCharCode));
+        keyIndex++;
+      } else {
+        result.push(char);
+      }
+    }
+
+    let encryptResult = result.join('');
+    return this.direct ? encryptResult : result.reverse().join('');
   }
 }
 
