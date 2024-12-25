@@ -29,15 +29,6 @@ function isMAC48Address(n) {
   }
 
   return true;
-
-  // let results =  macArr.map((item) => {
-  //   if (item.length !== 2 || !digits.includes(item[0]) || !digits.includes(item[1])) {
-  //     return false;
-  //   }
-  //   return true;
-  // })
-
-  // return !results.includes(false)
 }
 module.exports = {
   isMAC48Address
